@@ -99,11 +99,6 @@ public class TaskScheduler {
     }
 
     private void executeRoundRobin(Task task) {
-        // In a real OS, RR is preemptive. Since this is an application-level
-        // engine thread pool, we simulate a time slice by running the task 
-        // (assume it voluntarily yields or breaks work up if possible).
-        // For demonstration of the model, we execute it directly, but in a 
-        // full distributed model, the task would have a 'step()' method.
         System.out.println("Executing Time-Slice for Task [" + task.getName() + "] using ROUND_ROBIN");
         task.execute(); 
         

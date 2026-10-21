@@ -23,21 +23,16 @@ public class LogRecord {
     private long txnId;
     private long prevLsn;
 
-    // ── UPDATE / CLR fields (filled in Stage 4) ─────────────────────────
-
+   
     private int pageId;
     private int offset;
     private byte[] beforeImage;
     private byte[] afterImage;
 
-    // ── CLR-specific ────────────────────────────────────────────────────
-
-    /** For CLRs: the undoNext pointer — where to continue the undo chain. */
+    
     private long undoNext;
 
-    // ── Logical undo info (filled in Stage 6) ───────────────────────────
-
-    /** Logical undo type (e.g. IDX_INSERT, IDX_DELETE). */
+    
     private int logicalType;
     private long key;
     private long value;
@@ -47,8 +42,6 @@ public class LogRecord {
         this.prevLsn = Constants.INVALID_LSN;
         this.undoNext = Constants.INVALID_LSN;
     }
-
-    // ── accessors ───────────────────────────────────────────────────────
 
     public long getLsn()          { return lsn; }
     public void setLsn(long l)    { this.lsn = l; }

@@ -1,9 +1,6 @@
 package com.aerus.engine.scheduling;
 
-/**
- * Banker's Algorithm for Resource Allocation and Deadlock Avoidance.
- * Maps OS resource allocation concepts directly to the database lock manager.
- */
+
 public class BankersAlgorithm {
 
     private final int[] available;
