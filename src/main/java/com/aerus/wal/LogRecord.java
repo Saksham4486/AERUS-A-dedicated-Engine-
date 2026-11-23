@@ -1,12 +1,10 @@
 package com.aerus.wal;
 
-import com.aerus.common.Bytes;
-import com.aerus.common.Constants;
-
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.aerus.common.Constants;
 
 /**
  * In-memory representation of an ARIES/AERUS WAL log record.
@@ -14,7 +12,7 @@ import java.util.Map;
  */
 public class LogRecord {
 
-    // Preserve exact original 9 types in LogRecord.Type for backward compatibility with existing tests
+    // Exactly 9 original ARIES types in LogRecord.Type (LogType contains extended types)
     public enum Type {
         BEGIN,
         COMMIT,

@@ -48,7 +48,7 @@ public class AerusDashboard extends JFrame {
     private BTree bTree;
     private ExecutionEngine executionEngine;
     private TaskScheduler scheduler;
-    private BankersAlgorithm bankersAlgorithm;
+    private com.aerus.engine.scheduling.ResourceManager resourceManager;
 
     private Long currentTxnId = null;
     private final AtomicInteger taskCounter = new AtomicInteger(0);
@@ -152,15 +152,14 @@ public class AerusDashboard extends JFrame {
                 bTree.createIfEmpty();
                 diskManager.setRootPageId(bTree.getRootPageId());
             }
-            executionEngine = new ExecutionEngine(bufferPool, bTree);
+            resourceManager = new com.aerus.engine.scheduling.ResourceManager(10, 50, 20);
+            com.aerus.txn.LockManager lockManager = new com.aerus.txn.LockManager(3000);
+            com.aerus.engine.DatabaseManager dbManager = new com.aerus.engine.DatabaseManager(Paths.get("data"));
+            executionEngine = new ExecutionEngine(dbManager, lockManager, resourceManager);
 
-            scheduler = new TaskScheduler(SchedulingPolicy.FCFS);
+            // Default to ROUND_ROBIN as major CPU scheduling algorithm
+            scheduler = new TaskScheduler(SchedulingPolicy.ROUND_ROBIN, 20);
             scheduler.start();
-
-            int[] available = {10, 10, 10};
-            int[][] max = {{7, 5, 3}, {3, 2, 2}};
-            int[][] alloc = {{0, 1, 0}, {2, 0, 0}};
-            bankersAlgorithm = new BankersAlgorithm(available, max, alloc);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -249,15 +248,7 @@ public class AerusDashboard extends JFrame {
     }
 
     private void triggerBankers() {
-        int pId = (int) (Math.random() * 2);
-        int[] req = {(int) (Math.random() * 3), (int) (Math.random() * 2), (int) (Math.random() * 2)};
-        try {
-            boolean granted = bankersAlgorithm.requestResources(pId, req);
-            log("[Banker] Process P" + pId + " requested " + java.util.Arrays.toString(req) + " -> "
-                    + (granted ? "GRANTED (System Safe)" : "DENIED (Potential Deadlock Avoided)"));
-        } catch (IllegalArgumentException e) {
-            log("[Banker] Request denied (exceeded claim).");
-        }
+        log(resourceManager.getResourceReport());
     }
 
     private void log(String message) {
