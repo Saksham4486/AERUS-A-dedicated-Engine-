@@ -65,18 +65,14 @@ cd AERUS-A-dedicated-Engine-
 .\mvnw.cmd compile
 java -cp target/classes com.aerus.cli.AerusDashboard
 ```
-
 ### 4. Running the Test Suite
 The project includes a comprehensive JUnit 5 test suite verifying every component:
 ```powershell
 .\mvnw.cmd test
 ```
 *Current test suite status: **235 passed, 0 failures, 0 errors**.*
-
 ---
-
 ## Major Features & Architecture
-
 ```
                          ┌──────────── Clients ────────────┐
    Swing Dashboard   Interactive SQL Console   Java API (AerusDB)
