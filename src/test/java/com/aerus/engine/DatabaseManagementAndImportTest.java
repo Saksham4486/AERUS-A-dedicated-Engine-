@@ -67,27 +67,25 @@ public class DatabaseManagementAndImportTest {
         // Switch to main database
         engine.executeQuery("USE main", null);
         res = engine.executeQuery("GET 10", null);
-        assertTrue(res.contains("NOT_FOUND")); // key 10 was inserted into sales, not main
+        assertTrue(res.contains("NOT_FOUND")); 
     }
 
     @Test
     @DisplayName("IMPORT DATABASE from file with mixed CSV and SQL statements")
     void testImportDatabase() throws IOException {
-        // Create an import file
         File importFile = tempDir.resolve("dump.sql").toFile();
         try (FileWriter writer = new FileWriter(importFile)) {
             writer.write("# Database Import Dump\n");
             writer.write("INSERT 100 1000\n");
             writer.write("INSERT 200 2000\n");
-            writer.write("300,3000\n"); // CSV format
+            writer.write("300,3000\n"); 
             writer.write("400,4000\n");
         }
 
         String res = engine.executeQuery("IMPORT DATABASE " + importFile.getAbsolutePath() + " INTO imported_db", null);
         assertTrue(res.contains("SUCCESS: Imported file"));
         assertTrue(res.contains("4 records imported successfully"));
-
-        // Check data in imported_db
+        
         res = engine.executeQuery("GET 100", null);
         assertTrue(res.contains("1000"));
         res = engine.executeQuery("GET 300", null);
