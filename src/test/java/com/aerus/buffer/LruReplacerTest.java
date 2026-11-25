@@ -24,7 +24,7 @@ class LruReplacerTest {
 
         replacer.unpin(4);
         
-        // Use 2, making 3 the least recently used
+       
         replacer.pin(2);
         replacer.unpin(2);
 
